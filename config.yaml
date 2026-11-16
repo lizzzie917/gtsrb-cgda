@@ -1,0 +1,16 @@
+data_root: data
+img_size: 64
+num_classes: 43
+split_seed: 42          # fixed for ALL experiments, so everyone shares one split
+n_splits: 5             # 1 fold = 20% validation
+seeds: [42, 123, 2026]  # training seeds
+
+batch_size: 64
+epochs: 25
+lr: 0.0001
+weight_decay: 0.0001
+num_workers: 2
+
+split_file: results/split_seed42.json
+metrics_dir: results/metrics
+checkpoint_dir: checkpoints
