@@ -37,13 +37,18 @@ def track_aware_split(samples, split_file, seed=42, n_splits=5):
     return train_idx.tolist(), val_idx.tolist()
 
 class GTSRBDataset(Dataset):
-    """Returns (image_tensor, label). Keeping labels accessible makes the
-    class-specific CGDA hook easy to add later."""
+    """Returns (image_tensor, label). Supports optional per-class transforms
+    for static (E3) and dynamic (E4) CGDA."""
 
-    def __init__(self, samples, transform=None):
+    def __init__(self, samples, transform=None, class_transforms=None):
         self.samples = samples
         self.transform = transform
+        self.class_transforms = class_transforms  # dict: {class_id: transform}
         self.targets = [y for _, y in samples]
+
+    def set_class_transforms(self, class_transforms):
+        """Updates per-class transforms between epochs for dynamic CGDA (E4)."""
+        self.class_transforms = class_transforms
 
     def __len__(self):
         return len(self.samples)
@@ -51,6 +56,8 @@ class GTSRBDataset(Dataset):
     def __getitem__(self, i):
         path, y = self.samples[i]
         img = Image.open(path).convert("RGB")
-        if self.transform:
+        if self.class_transforms is not None and y in self.class_transforms:
+            img = self.class_transforms[y](img)
+        elif self.transform is not None:
             img = self.transform(img)
         return img, y
