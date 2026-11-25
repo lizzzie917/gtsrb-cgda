@@ -62,13 +62,31 @@ You do not need to write or edit any Python code. Your task is to:
 from google.colab import drive
 drive.mount('/content/drive')
 
-!git clone [https://github.com/lizzzie917/gtsrb-cgda.git](https://github.com/lizzzie917/gtsrb-cgda.git)
-%cd gtsrb-cgda
+# Clone the repository using a plain URL
+!git clone https://github.com/lizzzie917/gtsrb-cgda.git
 
+# Enter the repository
+%cd /content/gtsrb-cgda
+
+# Create backup directories in Google Drive
 import os
+
 os.makedirs('/content/drive/MyDrive/gtsrb-cgda/checkpoints', exist_ok=True)
 os.makedirs('/content/drive/MyDrive/gtsrb-cgda/results', exist_ok=True)
-!ln -s /content/drive/MyDrive/gtsrb-cgda/checkpoints checkpoints
+
+# Link checkpoints to Google Drive
+if os.path.islink('checkpoints') or os.path.exists('checkpoints'):
+    os.remove('checkpoints')
+
+os.symlink(
+    '/content/drive/MyDrive/gtsrb-cgda/checkpoints',
+    'checkpoints'
+)
+
+# Verify repository location
+print("Current directory:", os.getcwd())
+print("Training folder exists:", os.path.isdir('training'))
+print("Results folder exists:", os.path.isdir('results'))
 ```
 
 ---
