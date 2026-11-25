@@ -120,7 +120,7 @@ if torch.cuda.is_available():
 ---
 
 ### Cell 5, 6: Run Experiment E3 (Static CGDA — 3 Seeds)
-> **What this does:** Downloads the GTSRB dataset on the first seed, trains Static CGDA for 25 epochs across seeds `42`, `123`, and `2026`, and backs up `results/` to your Google Drive. (Run time: 35 minutes).*
+> **What this does:** Downloads the GTSRB dataset on the first seed, trains Static CGDA for 25 epochs across seeds `42`, `123`, and `2026`, and backs up `results/` to your Google Drive. (Run time: 35 minutes. ~10mins each seed).*
 
 ```python
 !python -m training.train_static_cgda --seed 42
@@ -140,7 +140,7 @@ if torch.cuda.is_available():
 ---
 
 ### Cell 6: Run Experiment E2 (Budget-Matched Uniform Augmentation — 3 Seeds)
-> **What this does:** Trains the uniform augmentation control across seeds `42`, `123`, and `2026`, then backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes).*
+> **What this does:** Trains the uniform augmentation control across seeds `42`, `123`, and `2026`, then backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes each seed).*
 
 ```python
 !python -m training.train_uniform --seed 42
@@ -156,7 +156,7 @@ if torch.cuda.is_available():
 ---
 
 ### Cell 7: Run Experiment E4 (Dynamic CGDA — 3 Seeds)
-> **What this does:** Trains Dynamic CGDA (updating per-class augmentation probabilities every 5 epochs) across seeds `42`, `123`, and `2026`, then backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes).*
+> **What this does:** Trains Dynamic CGDA (updating per-class augmentation probabilities every 5 epochs) across seeds `42`, `123`, and `2026`, then backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes each seed).*
 
 ```python
 !python -m training.train_dynamic_cgda --seed 42
