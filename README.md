@@ -244,7 +244,7 @@ files.download('/content/results_all.zip')
 
 
 
-## 7. Phase 5.2: Upload the Results Directly to GitHub (Collab Ver)
+## 7. Phase 5.2: Upload the Results Directly to GitHub (Colab Ver)
 ### Step 1: Configure your Git identity
 1. Run this once:
    ```bash
