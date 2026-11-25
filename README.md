@@ -90,8 +90,36 @@ print("Results folder exists:", os.path.isdir('results'))
 ```
 
 ---
+### Cell 2, 3, 4: Install dependencies
+> **Before training, run this in a separate cell:**
 
-### Cell 2: Run Experiment E3 (Static CGDA — 3 Seeds)
+```
+!pip install -r requirements.txt
+```
+
+> **verify that Colab recognizes your GPU:**
+
+```
+import torch
+
+print("PyTorch version:", torch.__version__)
+print("GPU available:", torch.cuda.is_available())
+
+if torch.cuda.is_available():
+    print("GPU:", torch.cuda.get_device_name(0))
+```
+
+> **verify that the training scripts are accessible:**
+
+```
+!ls training/
+!ls results/metrics/
+!ls results/analysis/
+```
+
+---
+
+### Cell 5, 6: Run Experiment E3 (Static CGDA — 3 Seeds)
 > **What this does:** Downloads the GTSRB dataset on the first seed, trains Static CGDA for 25 epochs across seeds `42`, `123`, and `2026`, and backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes).*
 
 ```python
@@ -101,9 +129,15 @@ print("Results folder exists:", os.path.isdir('results'))
 !cp -r results/* /content/drive/MyDrive/gtsrb-cgda/results/
 ```
 
+> **verify its output:** 
+
+```python
+ !ls results/metrics/E3*
+```
+
 ---
 
-### Cell 3: Run Experiment E2 (Budget-Matched Uniform Augmentation — 3 Seeds)
+### Cell 6: Run Experiment E2 (Budget-Matched Uniform Augmentation — 3 Seeds)
 > **What this does:** Trains the uniform augmentation control across seeds `42`, `123`, and `2026`, then backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes).*
 
 ```python
@@ -115,7 +149,7 @@ print("Results folder exists:", os.path.isdir('results'))
 
 ---
 
-### Cell 4: Run Experiment E4 (Dynamic CGDA — 3 Seeds)
+### Cell 7: Run Experiment E4 (Dynamic CGDA — 3 Seeds)
 > **What this does:** Trains Dynamic CGDA (updating per-class augmentation probabilities every 5 epochs) across seeds `42`, `123`, and `2026`, then backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes).*
 
 ```python
