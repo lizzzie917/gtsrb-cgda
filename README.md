@@ -269,6 +269,15 @@ You should see your newly generated experiment results.
    !git add checkpoints/
    ```
 
+### Step 3.5: Verify staged files
+```python
+!git status
+```
+You can also check a summary:
+```python
+!git diff --cached --stat
+```
+
 ### Step 4: Commit the changes
 ```python
 !git commit -m "Add E2 E3 and E4 experimental results"
@@ -284,6 +293,12 @@ You should see your newly generated experiment results.
    !git push origin main
    ```
    If your branch is not main, replace it with the branch name shown.
+
+### Step 6: Verify successful submission
+```python
+!git status
+!git log -1 --oneline
+```
 
 ### Authentication
 If GitHub requests authentication, use a Personal Access Token (PAT) or GitHub CLI authentication.
