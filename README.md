@@ -294,13 +294,13 @@ You can also check a summary:
    ```
    If your branch is not main, replace it with the branch name shown.
 
+### Authentication
+If GitHub requests authentication, use a Personal Access Token (PAT) or GitHub CLI authentication.
+
+Do not put your PAT directly into a notebook cell because it can remain visible in notebook history.
+
 ### Step 6: Verify successful submission
 ```python
 !git status
 !git log -1 --oneline
 ```
-
-### Authentication
-If GitHub requests authentication, use a Personal Access Token (PAT) or GitHub CLI authentication.
-
-Do not put your PAT directly into a notebook cell because it can remain visible in notebook history.
