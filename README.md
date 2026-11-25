@@ -30,6 +30,68 @@ All generated experimental results are available in the repository:
 
 Model checkpoints are stored separately in Google Drive and are not included in the GitHub repository.
 
+
+### Experimental Results Summary
+
+The following results are reported as mean ± standard deviation (%) across three random seeds (`42`, `123`, and `2026`).
+
+| Experiment | Validation Accuracy (%) | Validation Macro F1 (%) | Test Accuracy (%) | Test Macro F1 (%) |
+| --- | ---: | ---: | ---: | ---: |
+| E1 — Baseline | **98.20 ± 0.12** | **97.57 ± 0.10** | **97.24 ± 0.11** | **95.46 ± 0.24** |
+| E2 — Uniform Augmentation | 97.39 ± 0.45 | 95.86 ± 0.53 | 97.20 ± 0.07 | 95.42 ± 0.20 |
+| E3 — Static CGDA | 97.84 ± 0.33 | 96.21 ± 1.22 | 97.03 ± 0.37 | 95.34 ± 0.76 |
+| E4 — Dynamic CGDA | 97.77 ± 0.39 | 96.87 ± 0.82 | 97.00 ± 0.27 | 95.09 ± 0.30 |
+
+**Bold values** indicate the highest mean performance for each metric.
+
+![Experimental Performance Comparison](results/figures/E1_to_E4_comparison.png)
+
+The baseline achieved the highest mean aggregate performance across all four metrics. Further class-level analysis is conducted to investigate potential localized benefits and performance trade-offs associated with CGDA.
+
+The consolidated numerical results are available in [`final_comparison.json`](results/analysis/final_comparison.json).
+
+
+### Additional Class-Level Analyses
+
+Beyond aggregate accuracy and macro F1, supplementary class-level analyses have been generated to investigate the effects of CGDA on individual traffic sign classes and frequently confused class pairs.
+
+These analyses include:
+
+1. **Underperforming Classes:** Comparative test recall of the 10 lowest-recall classes identified from baseline validation results.
+2. **Confusion Pair Analysis:** Comparison of test misclassification rates for frequently confused class pairs identified from baseline validation results.
+3. **Speed-Limit Recognition:** Comparison of per-class recall and within-group misclassification rates among speed-limit signs.
+4. **Class-Level Performance Trade-offs:** Assessment of recall changes across all 43 classes, including initially weak and strong classes.
+5. **Improvement and Seed Consistency:** Quantification of improved, near-unchanged, and declined classes, including consistency across the three random seeds.
+
+#### Generated Analytical Tables
+
+| File | Description |
+| --- | --- |
+| `baseline_worst_classes.csv` | Test recall of baseline-defined underperforming classes |
+| `confusion_pairs.csv` | Comparative misclassification rates |
+| `speed_limit_recall.csv` | Per-class recall of speed-limit signs |
+| `speed_limit_confusion.csv` | Within-speed-limit misclassification rates |
+| `all_class_recall_changes.csv` | Recall changes across all 43 classes |
+| `recall_by_class_group.csv` | Comparative recall of initially weak, middle, and strong classes |
+| `improvement_summary.csv` | Summary of improved, near-unchanged, and declined classes |
+| `seed_level_consistency.csv` | Class-level recall changes across individual seeds |
+| `consistent_improvements.csv` | Classes consistently improved across all three seeds |
+| `test_recall_std.csv` | Per-class test recall variability |
+
+All supplementary tables are available in [`results/analysis/class_comparison/`](results/analysis/class_comparison/).
+
+#### Generated Comparative Figures
+
+* [Recall of Baseline's Worst-Performing Classes](results/figures/comparison_baseline_worst_classes.png)
+* [Confusion Pair Comparison](results/figures/comparison_confusion_pairs.png)
+* [Speed-Limit Recall Comparison](results/figures/comparison_speed_limits.png)
+* [Class-Level Recall Changes](results/figures/comparison_class_recall_changes.png)
+
+These analyses were generated using existing experimental outputs without additional model training.
+
+**Current Status:** Supplementary analytical tables and visualizations have been generated. Validation, interpretation, and discussion of the class-level findings are ongoing.
+
+
 ### Current Progress
 
 - [x] Dataset preparation and preprocessing
@@ -41,11 +103,27 @@ Model checkpoints are stored separately in Google Drive and are not included in 
 - [x] E3 — Static CGDA training
 - [x] E4 — Dynamic CGDA training
 - [x] Confusion and per-class recall analyses
-- [x] Comparative evaluation and visualization
+- [x] Aggregate comparative evaluation and visualization
+- [x] Baseline-defined underperforming class analysis
+- [x] Comparative confusion pair analysis
+- [x] Speed-limit recognition analysis
+- [x] Class-level performance trade-off analysis
+- [x] Multi-seed class-level consistency analysis
 - [x] Upload experimental results to GitHub
-- [ ] Final validation and interpretation of experimental results
+- [ ] Final validation of experimental and analytical outputs
+- [ ] Interpretation and discussion of findings
 - [ ] Research paper completion
 - [ ] Research presentation
+
+
+### Experimental Notebook
+
+The Google Colab notebook used for model training, comparative evaluation, and supplementary class-level analyses is available below:
+
+[Google Colab — GTSRB CGDA Experiments](https://colab.research.google.com/drive/1wn-GS6fU1qWT7NIuk98j2NiGnW3bTB77?usp=sharing)
+
+The notebook documents the experimental execution and additional analytical procedures used in this study.
+
 
 ### Reproducing the Experiments
 
