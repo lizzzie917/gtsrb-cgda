@@ -2,22 +2,61 @@
 
 ## 1. Project Overview & Current Status
 
-This repository implements **Confusion-Guided Data Augmentation (CGDA)** on the German Traffic Sign Recognition Benchmark (GTSRB, 43 traffic sign classes) using a ResNet18 classifier.
+This repository implements **Confusion-Guided Data Augmentation (CGDA)** on the German Traffic Sign Recognition Benchmark (GTSRB, 43 traffic sign classes) using a ResNet18 classifier. The study investigates whether targeting augmentation toward poorly classified traffic sign classes improves classification performance compared to conventional augmentation strategies.
 
-### What Is Already Completed
-* **Dataset & Track-Aware Split (`data_utils/gtsrb.py`, `results/split_seed42.json`):** Locked in an 80/20 train/validation split grouped by physical sign track so no track leaks between training and validation.
-* **Experiment E1 — Baseline (`training/train_baseline.py`):** Already trained across all 3 seeds (`42`, `123`, `2026`), achieving **97.24% ± 0.11%** test accuracy and **95.46% ± 0.24%** test macro F1. Baseline metrics, confusion analysis, and figures are already saved in `results/`.
-* **All Remaining Scripts Ready to Run:**
-  * **E3 (`training/train_static_cgda.py`):** Static CGDA using E1 validation confusion probabilities.
-  * **E2 (`training/train_uniform.py`):** Budget-matched uniform augmentation control.
-  * **E4 (`training/train_dynamic_cgda.py`):** Dynamic CGDA recalculating class probabilities every 5 epochs.
-  * **Evaluation (`evaluation/analyze_confusion.py`, `evaluation/compare_experiments.py`):** Aggregates 3-seed metrics, exports confusion matrices, and generates the final comparison table and plots.
+### Completed Implementation and Experiments
 
-### Your Role (Zero Coding Required)
-You do not need to write or edit any Python code. Your task is to:
-1. Run Experiments **E3**, **E2**, and **E4** on Google Colab using the copy-paste cells below.
-2. Run the evaluation scripts in Colab to generate all metrics, confusion matrices, and comparison charts.
-3. Download the generated `results_all.zip` file and upload the new results back to this GitHub repository.
+* **Dataset & Track-Aware Split (`data_utils/gtsrb.py`, `results/split_seed42.json`):** An 80/20 train/validation split grouped by physical sign track, designed to prevent track leakage between training and validation.
+* **Experiment E1 — Baseline (`training/train_baseline.py`):** Baseline model trained across three seeds, achieving **97.24% ± 0.11%** test accuracy and **95.46% ± 0.24%** test macro F1.
+* **Experiment E2 — Budget-Matched Uniform Augmentation (`training/train_uniform.py`):** Uniform augmentation control using the weighted-average augmentation probability derived from static CGDA.
+* **Experiment E3 — Static CGDA (`training/train_static_cgda.py`):** Class-specific augmentation probabilities derived from E1 validation confusion analysis and kept fixed throughout training.
+* **Experiment E4 — Dynamic CGDA (`training/train_dynamic_cgda.py`):** Adaptive class-specific augmentation probabilities recalculated every five epochs based on validation performance.
+* **Evaluation (`evaluation/analyze_confusion.py`, `evaluation/compare_experiments.py`):** Completed confusion analyses, per-class recall analyses, aggregate performance metrics, and comparative visualizations across all four experiments.
+
+All four experiments have been completed across three random seeds (`42`, `123`, and `2026`), totaling **12 training runs**.
+
+### Experimental Outputs
+
+All generated experimental results are available in the repository:
+
+| Directory / File | Description |
+| --- | --- |
+| `results/metrics/` | Individual training and evaluation metrics across all experiments and seeds |
+| `results/analysis/` | Confusion analyses and aggregated experimental results |
+| `results/figures/` | Confusion matrices, per-class recall plots, and comparative visualizations |
+| `results/analysis/final_comparison.json` | Consolidated performance comparison across E1–E4 |
+| `results/figures/E1_to_E4_comparison.png` | Visual comparison of experimental performance |
+| `results/split_seed42.json` | Shared training-validation split |
+
+Model checkpoints are stored separately in Google Drive and are not included in the GitHub repository.
+
+### Current Progress
+
+- [x] Dataset preparation and preprocessing
+- [x] Track-aware splitting
+- [x] Baseline model implementation
+- [x] Static and dynamic CGDA implementation
+- [x] E1 — Baseline training
+- [x] E2 — Budget-matched uniform augmentation training
+- [x] E3 — Static CGDA training
+- [x] E4 — Dynamic CGDA training
+- [x] Confusion and per-class recall analyses
+- [x] Comparative evaluation and visualization
+- [x] Upload experimental results to GitHub
+- [ ] Final validation and interpretation of experimental results
+- [ ] Research paper completion
+- [ ] Research presentation
+
+### Reproducing the Experiments
+
+The following sections provide step-by-step instructions for reproducing the experiments using Google Colab, including:
+
+1. Setting up repository access and the computational environment.
+2. Running Experiments E3, E2, and E4 across all three seeds.
+3. Generating evaluation metrics, confusion analyses, and comparative visualizations.
+4. Exporting experimental results or pushing them directly to GitHub.
+
+These instructions are retained for reproducibility and future experimentation. Retraining is not required to access or analyze the existing experimental results.
 
 ---
 
@@ -215,7 +254,7 @@ files.download('/content/results_all.zip')
 2. Navigate to where you want to store the project (for example, your `Documents` folder) and clone the repository:
    ```bash
    cd ~/Documents
-   git clone [https://github.com/lizzzie917/gtsrb-cgda.git](https://github.com/lizzzie917/gtsrb-cgda.git)
+   git clone https://github.com/lizzzie917/gtsrb-cgda.git
    cd gtsrb-cgda
    git checkout -b feature/cgda-results
    ```
@@ -243,64 +282,175 @@ files.download('/content/results_all.zip')
 4. Click **Create pull request**, then click **Merge pull request** -> **Confirm merge** to merge your results into `main`.
 
 
-
 ## 7. Phase 5.2: Upload the Results Directly to GitHub (Colab Ver)
+
+This method allows you to commit and push experimental
+results directly from Google Colab without downloading
+`results_all.zip` to your computer.
+
 ### Step 1: Configure your Git identity
-1. Run this once:
-   ```bash
-   !git config --global user.name "Your GitHub Name"
-   !git config --global user.email "your-github-email@example.com"
-   ```
-   Use the name and email associated with your GitHub account.
+
+Run this once:
+
+```python
+!git config --global user.name "Your Full Name"
+!git config --global user.email "your-github-email@example.com"
+```
+
+Use the name and email associated with your GitHub account.
 
 ### Step 2: Check which files have changed
+
 ```python
 !git status
 ```
-You should see your newly generated experiment results.
+
+You should see your newly generated experiment results
+listed as untracked or modified files.
 
 ### Step 3: Stage your results
-1. If you only want to commit experiment outputs:
-   ```bash
-   !git add results/
-   ```
-2. If you only want to commit experiment outputs:
-   ```bash
-   !git add checkpoints/
-   ```
 
-### Step 3.5: Verify staged files
+```python
+!git add results/
+```
+
+**Important:** Do not use `git add .` or
+`git add checkpoints/`. The checkpoints directory is a
+symbolic link to Google Drive and should remain untracked.
+
+Verify the staged files:
+
 ```python
 !git status
-```
-You can also check a summary:
-```python
 !git diff --cached --stat
 ```
 
 ### Step 4: Commit the changes
+
 ```python
 !git commit -m "Add E2 E3 and E4 experimental results"
 ```
 
-### Step 5: Push to Github
-1. First, check your current branch:
-   ```bash
-   !git branch --show-current
-   ```
-2. Then push:
-   ```bash
-   !git push origin main
-   ```
-   If your branch is not main, replace it with the branch name shown.
+### Step 5: Generate a GitHub Personal Access Token (PAT)
 
-### Authentication
-If GitHub requests authentication, use a Personal Access Token (PAT) or GitHub CLI authentication.
+GitHub requires authentication when pushing from Colab.
 
-Do not put your PAT directly into a notebook cell because it can remain visible in notebook history.
+1. Go to https://github.com/settings/tokens.
+2. Click **Generate new token (classic)**.
+3. Configure the following:
+   - **Note:** GTSRB Colab
+   - **Expiration:** 30 days
+   - **Scope:** `repo` (leave other scopes unchecked)
+4. Click **Generate token**.
+5. Copy the generated token and keep it private.
 
-### Step 6: Verify successful submission
+Ensure you have accepted the GitHub collaborator invitation
+before proceeding.
+
+### Step 6: Authenticate and push to GitHub
+
+Check your current branch:
+
+```python
+!git branch --show-current
+```
+
+If your branch is `main` and direct pushes are permitted,
+run the following cell:
+
+```python
+from getpass import getpass
+import subprocess
+import os
+import base64
+
+username = input("GitHub username: ")
+token = getpass("GitHub Personal Access Token: ")
+
+credentials = base64.b64encode(
+    f"{username}:{token}".encode()
+).decode()
+
+env = os.environ.copy()
+env["GIT_CONFIG_COUNT"] = "1"
+env["GIT_CONFIG_KEY_0"] = "http.extraHeader"
+env["GIT_CONFIG_VALUE_0"] = f"Authorization: Basic {credentials}"
+env["GIT_TERMINAL_PROMPT"] = "0"
+
+result = subprocess.run(
+    ["git", "push", "origin", "main"],
+    capture_output=True,
+    text=True,
+    env=env
+)
+
+print(result.stdout)
+print(result.stderr)
+print("Exit code:", result.returncode)
+
+del token, credentials, env
+```
+
+Run the code as provided. Enter your GitHub username
+(not your display name) and PAT when prompted.
+
+An exit code of `0` indicates a successful push.
+
+**Security:** Never hardcode your PAT into the notebook
+or share it with other users.
+
+### Step 7 (Optional): Resolve a "fetch first" error
+
+If the push is rejected because the remote repository
+contains newer changes, create a backup branch first:
+
+```python
+!git branch backup-experiment-results
+```
+
+Copy the authentication cell from Step 6 into a new cell,
+then replace:
+
+```python
+["git", "push", "origin", "main"],
+```
+
+with:
+
+```python
+["git", "pull", "--rebase", "origin", "main"],
+```
+
+Run the modified cell and authenticate again.
+
+If the pull succeeds (exit code `0`), rerun the original
+authentication and push cell from Step 6.
+
+If a conflict occurs, resolve it before pushing.
+Do not use `git push --force`.
+
+### Step 8: Verify successful submission
+
 ```python
 !git status
 !git log -1 --oneline
 ```
+
+The expected status is:
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+    checkpoints
+```
+
+The untracked checkpoints entry is expected and can be
+left unchanged.
+
+Visit https://github.com/lizzzie917/gtsrb-cgda
+to confirm that all experimental results have been uploaded.
+
+Once the submission is complete, you may revoke your PAT
+at https://github.com/settings/tokens.
