@@ -120,7 +120,7 @@ if torch.cuda.is_available():
 ---
 
 ### Cell 5, 6: Run Experiment E3 (Static CGDA — 3 Seeds)
-> **What this does:** Downloads the GTSRB dataset on the first seed, trains Static CGDA for 25 epochs across seeds `42`, `123`, and `2026`, and backs up `results/` to your Google Drive. *(Estimated time: 10 to 15 minutes).*
+> **What this does:** Downloads the GTSRB dataset on the first seed, trains Static CGDA for 25 epochs across seeds `42`, `123`, and `2026`, and backs up `results/` to your Google Drive. (Run time: 35 minutes).*
 
 ```python
 !python -m training.train_static_cgda --seed 42
@@ -128,6 +128,8 @@ if torch.cuda.is_available():
 !python -m training.train_static_cgda --seed 2026
 !cp -r results/* /content/drive/MyDrive/gtsrb-cgda/results/
 ```
+
+> **One important precaution:** You can run all three seeds in one cell but if you want, you can also run them in separate cells. Just don't run them all in separate Colab cells simultaneously. Run them SEQUENTIALLY so that GPU memory and experiment outputs are managed properly. 
 
 > **verify its output:** 
 
@@ -146,7 +148,11 @@ if torch.cuda.is_available():
 !python -m training.train_uniform --seed 2026
 !cp -r results/* /content/drive/MyDrive/gtsrb-cgda/results/
 ```
+> **verify its output:** 
 
+```python
+ !ls results/metrics/E2*
+```
 ---
 
 ### Cell 7: Run Experiment E4 (Dynamic CGDA — 3 Seeds)
@@ -161,6 +167,11 @@ if torch.cuda.is_available():
 
 > **Tip if Colab disconnects mid-way:** Keep the Colab browser tab open while training runs. If Colab ever disconnects or restarts, re-run **Cell 1**, restore any already-finished results from Drive by running `!cp -r /content/drive/MyDrive/gtsrb-cgda/results/* results/`, and then continue from whichever experiment cell did not finish.
 
+> **verify its output:** 
+
+```python
+ !ls results/metrics/E4*
+```
 ---
 
 ## 5. Phase 4: Generate Confusion Analyses, Charts & Download Results
@@ -191,7 +202,11 @@ files.download('/content/results_all.zip')
 
 ---
 
-## 6. Phase 5: Upload the Results Back to GitHub
+### If you don't want to Download `results_all.zip` to Your Computer, you can just Commit Changes directly to Github
+> **Follow Phase 5.2 Instructions**.
+
+
+## 6. Phase 5.1: Upload the Results Back to GitHub (Local Computer Ver)
 
 ### Step 1: Clone the Repository to Your Computer
 1. Open a terminal on your computer:
@@ -226,3 +241,51 @@ files.download('/content/results_all.zip')
 2. Open `https://github.com/lizzzie917/gtsrb-cgda` in your web browser.
 3. Click the green **Compare & pull request** button that appears near the top of the page.
 4. Click **Create pull request**, then click **Merge pull request** -> **Confirm merge** to merge your results into `main`.
+
+
+
+## 7. Phase 5.2: Upload the Results Directly to GitHub (Collab Ver)
+### Step 1: Configure your Git identity
+1. Run this once:
+   ```bash
+   !git config --global user.name "Your GitHub Name"
+   !git config --global user.email "your-github-email@example.com"
+   ```
+   Use the name and email associated with your GitHub account.
+
+### Step 2: Check which files have changed
+```python
+!git status
+```
+You should see your newly generated experiment results.
+
+### Step 3: Stage your results
+1. If you only want to commit experiment outputs:
+   ```bash
+   !git add results/
+   ```
+2. If you only want to commit experiment outputs:
+   ```bash
+   !git add checkpoints/
+   ```
+
+### Step 4: Commit the changes
+```python
+!git commit -m "Add E2 E3 and E4 experimental results"
+```
+
+### Step 5: Push to Github
+1. First, check your current branch:
+   ```bash
+   !git branch --show-current
+   ```
+2. Then push:
+   ```bash
+   !git push origin main
+   ```
+   If your branch is not main, replace it with the branch name shown.
+
+### Authentication
+If GitHub requests authentication, use a Personal Access Token (PAT) or GitHub CLI authentication.
+
+Do not put your PAT directly into a notebook cell because it can remain visible in notebook history.
